@@ -1,0 +1,36 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: nc-buffer
+  namespace: services
+spec:
+  buffering:
+    maxRequestBodyBytes: 1024000000
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: nc-headers
+  namespace: services
+spec:
+  headers:
+    stsSeconds: 15552000
+    stsIncludeSubdomains: true
+    stsPreload: true
+    customFrameOptionsValue: SAMEORIGIN
+    browserXssFilter: true
+    contentTypeNosniff: true
+    referrerPolicy: "no-referrer"
+    customResponseHeaders:
+      X-Robots-Tags: "none"
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: nc-caldav
+  namespace: services
+spec:
+  replacePathRegex:
+    regex: ^/.well-known/ca(l|rd)dav
+    replacement: /remote.php/dav/

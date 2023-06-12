@@ -1,0 +1,99 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: code-server
+  namespace: services
+  labels:
+    app: code-server
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: code-server
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: code-server
+      annotations: {}
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+      - name: dind
+        image: docker:20.10.13-dind
+        imagePullPolicy: IfNotPresent
+        args:
+        - --host=tcp://0.0.0.0:2375
+        - --tls=false
+        - --experimental
+        env:
+        - name: DOCKER_TLS_CERTDIR
+          value: ""
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: dind-storage
+          mountPath: /var/lib/docker
+        resources: {}
+      - name: code-server
+        image: ebrianne/code-server:v3.12.0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8443
+        env:
+        - name: PUID
+          value: "1001"
+        - name: PGID
+          value: "1001"
+        - name: TZ
+          value: "Europe/Berlin"
+        - name: SUDO_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: code-server-secret
+              key: sudo_password
+        - name: DOCKER_HOST
+          value: "tcp://localhost:2375"
+        - name: DOCKER_CLI_EXPERIMENTAL
+          value: "enabled"
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: 0.5
+          limits:
+            memory: "2Gi"
+            cpu: 1
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8443
+          initialDelaySeconds: 15
+          timeoutSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8443
+          initialDelaySeconds: 30
+          timeoutSeconds: 30
+        startupProbe:
+          httpGet:
+            path: /
+            port: 8443
+          failureThreshold: 30
+          periodSeconds: 10
+        volumeMounts:
+        - name: config
+          mountPath: /config
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: nfs-pvc-code-server
+      - name: dind-storage
+        emptyDir: {}

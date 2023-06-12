@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+  sonarr:
+    image: ghcr.io/linuxserver/sonarr:version-3.0.7.1477
+    container_name: sonarr
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - media
+    ports:
+      - 8989:8989
+    environment:
+      - PUID=65534
+      - PGID=65534
+      - TZ=America/Chicago
+    volumes:
+      - $HOME/sonarr/data:/config
+      - /nfs/Media/downloads/transcoded:/downloads
+      - /nfs/Media/Series:/tv
+
+networks:
+  media:
+    external: true

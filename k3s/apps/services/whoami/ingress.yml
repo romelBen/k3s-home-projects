@@ -1,0 +1,27 @@
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  labels:
+    app: whoami
+  name: whoami
+  namespace: services
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    kubernetes.io/ingress.allow-http: "false"
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.middlewares: services-traefik-real-ip@kubernetescrd,services-authelia-auth@kubernetescrd,kube-system-traefik-errors@kubernetescrd,services-rate-limit@kubernetescrd,services-authelia-headers@kubernetescrd
+spec:
+  rules:
+  - host: technolab.cloud
+    http:
+      paths:
+      - path: /whoami
+        backend:
+          serviceName: whoami
+          servicePort: 80
+  tls:
+  - hosts:
+    - technolab.cloud
+    secretName: services-technolab-cloudflare-org-tls

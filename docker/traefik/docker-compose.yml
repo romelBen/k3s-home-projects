@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  traefik-default-backend:
+    container_name: traefik-default-backend
+    image: ebrianne/default-http-backend:v1.2
+    networks:
+      - proxy
+    ports:
+      - 8080:8080
+
+  traefik:
+    image: traefik:v2.6.1
+    container_name: traefik
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - proxy
+    ports:
+      - 80:80
+      - 389:389
+      - 443:443
+      - 1025:1025
+    environment:
+      - CF_API_EMAIL=
+      - CF_API_KEY=
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - $HOME/traefik/data/traefik.yml:/traefik.yml:ro
+      - $HOME/traefik/data/acme.json:/acme.json
+      - $HOME/traefik/data/config:/config:ro
+    depends_on:
+      - traefik-default-backend
+
+networks:
+  proxy:
+    external: true

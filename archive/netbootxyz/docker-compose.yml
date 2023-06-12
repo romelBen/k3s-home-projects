@@ -1,0 +1,23 @@
+---
+version: "3"
+
+services:
+  netbootxyz:
+    image: linuxserver/netbootxyz:latest
+    container_name: netbootxyz
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - PORT_RANGE=30000:30010
+      - SUBFOLDER=/
+      - MENU_VERSION=2.0.52
+    volumes:
+      - $HOME/netbootxyz/data:/config
+      - $HOME/netbootxyz/assets:/assets
+    ports:
+      - 3000:3000
+      - 69:69/udp
+      - 8086:80
+    restart: unless-stopped

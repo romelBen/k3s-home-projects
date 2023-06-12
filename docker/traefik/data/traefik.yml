@@ -1,0 +1,30 @@
+api:
+  dashboard: true
+entryPoints:
+  http:
+    address: ":80"
+  https:
+    address: ":443"
+  ldap:
+    address: ":389"
+  smtp:
+    address: ":1025"
+serversTransport:
+  insecureSkipVerify: true
+providers:
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false
+  file:
+    directory: /config
+    watch: true
+certificatesResolvers:
+  cloudflare:
+    acme:
+      email: 
+      storage: acme.json
+      dnsChallenge:
+        provider: cloudflare
+        resolvers:
+          - "1.1.1.1:53"
+          - "1.0.0.1:53"

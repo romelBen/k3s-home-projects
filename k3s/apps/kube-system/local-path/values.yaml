@@ -1,0 +1,34 @@
+local-path-provisioner:
+  replicaCount: 1
+
+  image:
+    repository: rancher/local-path-provisioner
+    tag: v0.0.21
+    pullPolicy: IfNotPresent
+
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+  tolerations:
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/master
+    operator: Exists
+
+  nodeSelector:
+    node-role.kubernetes.io/master: "true"
+
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app.kubernetes.io/name
+            operator: In
+            values:
+            - local-path-provisioner
+        topologyKey: "kubernetes.io/hostname"

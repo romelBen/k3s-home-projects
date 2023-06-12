@@ -1,0 +1,26 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  namespace: argo-cd
+  name: argo-cd
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/ebrianne/k3s-at-home.git
+    targetRevision: HEAD
+    path: k3s/apps/argo-cd/
+    helm:
+      releaseName: argo-cd
+      valueFiles:
+        - values.yaml
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argo-cd
+
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true

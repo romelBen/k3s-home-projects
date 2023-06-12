@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  phpldapadmin:
+    image: osixia/phpldapadmin:0.9.0
+    container_name: phpldapadmin
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    command: 
+      - "--copy-service"
+      - "--loglevel"
+      - "debug"
+    ports:
+      - 8084:80
+    environment:
+      - PHPLDAPADMIN_LDAP_HOSTS=openldap
+      - PHPLDAPADMIN_HTTPS=false

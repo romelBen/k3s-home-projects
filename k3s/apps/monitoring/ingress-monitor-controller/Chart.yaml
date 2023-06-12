@@ -1,0 +1,10 @@
+---
+apiVersion: v2
+type: application
+name: ingress-monitor-controller
+version: 2.1.7
+appVersion: 2.1.7
+dependencies:
+  - name: ingressmonitorcontroller
+    repository: https://stakater.github.io/stakater-charts
+    version: 2.1.15

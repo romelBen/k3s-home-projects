@@ -1,0 +1,21 @@
+---
+version: "3"
+
+services:
+  librespeed:
+    image: linuxserver/librespeed:5.2.5
+    container_name: librespeed
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+      - PASSWORD=
+      - CUSTOM_RESULTS=true
+      - DB_TYPE=sqlite
+    volumes:
+      - $HOME/librespeed/data:/config
+    ports:
+      - 8088:80
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true

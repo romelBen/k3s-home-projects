@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+  bazarr:
+    image: ghcr.io/linuxserver/bazarr:version-v1.0.3
+    container_name: bazarr
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - media
+    ports:
+      - 6767:6767
+    environment:
+      - PUID=65534
+      - PGID=65534
+      - TZ=America/Chicago
+    volumes:
+      - $HOME/bazarr/data:/config
+      - /nfs/Media/Movies:/movies
+      - /nfs/Media/Series:/tv
+
+networks:
+  media:
+    external: true

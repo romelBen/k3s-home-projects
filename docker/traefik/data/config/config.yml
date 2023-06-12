@@ -1,0 +1,653 @@
+http:
+  routers:
+    proxmox:
+      entryPoints:
+        - "https"
+      rule: "Host(`proxmox.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: proxmox
+    proxmox-dell:
+      entryPoints:
+        - "https"
+      rule: "Host(`proxmox-dell.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: proxmox-dell
+    adguard:
+      entryPoints:
+        - "https"
+      rule: "Host(`adguard.local.technolab.cloud`)"
+      middlewares:
+        - secured
+        - adguard-headers-extra
+      tls: {}
+      service: adguard
+    adguard-backup:
+      entryPoints:
+        - "https"
+      rule: "Host(`adguard-backup.local.technolab.cloud`)"
+      middlewares:
+        - secured
+        - adguard-headers-extra
+      tls: {}
+      service: adguard-backup
+    truenas:
+      entryPoints:
+        - "https"
+      rule: "Host(`truenas.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: truenas
+    minio:
+      entryPoints:
+        - "https"
+      rule: "Host(`minio.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: minio
+    unifi:
+      entryPoints:
+        - "https"
+      rule: "Host(`unifi.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: unifi
+    argo-cd:
+      entryPoints:
+        - "https"
+      rule: "Host(`argocd.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: argo-cd
+    dashboard:
+      entryPoints:
+        - "https"
+      rule: "Host(`dashboard.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: dashboard
+    adminer:
+      entryPoints:
+        - "https"
+      rule: "Host(`adminer.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: adminer
+    portainer:
+      entryPoints:
+        - "https"
+      rule: "Host(`portainer.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: portainer
+    bazarr:
+      entryPoints:
+        - "https"
+      rule: "Host(`bazarr.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: bazarr
+    calibre-web:
+      entryPoints:
+        - "https"
+      rule: "Host(`calibre.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: calibre-web
+    deluge:
+      entryPoints:
+        - "https"
+      rule: "Host(`deluge.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: deluge
+    duplicati:
+      entryPoints:
+        - "https"
+      rule: "Host(`duplicati.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: duplicati
+    jackett:
+      entryPoints:
+        - "https"
+      rule: "Host(`jackett.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: jackett
+    firefly:
+      entryPoints:
+        - "https"
+      rule: "Host(`firefly.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: firefly
+    lidarr:
+      entryPoints:
+        - "https"
+      rule: "Host(`lidarr.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: lidarr
+    mailhog:
+      entryPoints:
+        - "https"
+      rule: "Host(`mailhog.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: mailhog
+    ombi:
+      entryPoints:
+        - "https"
+      rule: "Host(`ombi.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: ombi
+    phpldapadmin:
+      entryPoints:
+        - "https"
+      rule: "Host(`ldapadmin.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: phpldapadmin
+    radarr:
+      entryPoints:
+        - "https"
+      rule: "Host(`radarr.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: radarr
+    sonarr:
+      entryPoints:
+        - "https"
+      rule: "Host(`sonarr.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: sonarr
+    webnut:
+      entryPoints:
+        - "https"
+      rule: "Host(`nut.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: webnut
+    home-assistant:
+      entryPoints:
+        - "https"
+      rule: "Host(`home-assistant.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: home-assistant
+    uptime-kuma:
+      entryPoints:
+        - "https"
+      rule: "Host(`uptime.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: uptime-kuma
+    guacamole:
+      entryPoints:
+        - "https"
+      rule: "Host(`guacamole.local.technolab.cloud`)"
+      middlewares:
+        - secured
+        - add-guacamole-prefix
+      tls: {}
+      service: guacamole
+    grafana:
+      entryPoints:
+        - "https"
+      rule: "Host(`grafana.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: grafana
+    prometheus:
+      entryPoints:
+        - "https"
+      rule: "Host(`prometheus.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: prometheus
+    handbrake:
+      entryPoints:
+        - "https"
+      rule: "Host(`handbrake.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: handbrake
+    adguard-sync:
+      entryPoints:
+        - "https"
+      rule: "Host(`adguard-sync.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: adguard-sync
+    zigbee2mqtt:
+      entryPoints:
+        - "https"
+      rule: "Host(`zigbee2mqtt.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: zigbee2mqtt
+    librespeed:
+      entryPoints:
+        - "https"
+      rule: "Host(`speedtest.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: librespeed
+    netboot-admin:
+      entryPoints:
+        - "https"
+      rule: "Host(`netboot.local.technolab.cloud`)"
+      tls: {}
+      service: netboot-admin
+    netboot-pxe:
+      entryPoints:
+        - "https"
+      rule: "Host(`pxe.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: netboot-pxe
+    influxdb:
+      entryPoints:
+        - "https"
+      rule: "Host(`influxdb.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: influxdb
+    dsmr:
+      entryPoints:
+        - "https"
+      rule: "Host(`dsmr.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: dsmr
+    jellyfin:
+      entryPoints:
+        - "https"
+      rule: "Host(`jellyfin.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: jellyfin
+    homebridge:
+      entryPoints:
+        - "https"
+      rule: "Host(`homebridge.local.technolab.cloud`)"
+      middlewares:
+        - secured
+      tls: {}
+      service: homebridge
+      
+  services:
+    proxmox:
+      loadBalancer:
+        servers:
+          - url: "https://192.168.10.12:8006"
+        passHostHeader: true
+    proxmox-dell:
+      loadBalancer:
+        servers:
+          - url: "https://192.168.10.13:8006"
+        passHostHeader: true
+    adguard:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.10.252:3000"
+        passHostHeader: true
+    adguard-backup:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.10.253:3000"
+        passHostHeader: true
+    truenas:
+      loadBalancer:
+        servers:
+          - url: "https://192.168.10.10"
+        passHostHeader: true
+    minio:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.10.10:9000/"
+        passHostHeader: true
+    unifi:
+      loadBalancer:
+        servers:
+          - url: "https://192.168.10.100:8443/"
+        passHostHeader: true
+    argo-cd:
+      loadBalancer:
+        servers:
+          - url: "http://10.0.30.11/"
+        passHostHeader: true
+    dashboard:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.10.50:8080/"
+        passHostHeader: true
+    adminer:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.10.50:8081/"
+        passHostHeader: true
+    portainer:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.10.252:9000/"
+        passHostHeader: true
+    bazarr:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.10.52:6767/"
+        passHostHeader: true
+    calibre-web:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.10.50:8083/"
+        passHostHeader: true
+    deluge:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.10.52:8112/"
+        passHostHeader: true
+    duplicati:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.10.50:8200/"
+        passHostHeader: true
+    firefly:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.10.50:8082/"
+        passHostHeader: true
+    jackett:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.10.52:9117/"
+        passHostHeader: true
+    lidarr:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.10.52:8686/"
+        passHostHeader: true
+    mailhog:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.10.50:8025/"
+        passHostHeader: true
+    ombi:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.10.52:3579/"
+        passHostHeader: true
+    phpldapadmin:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.10.50:8084/"
+        passHostHeader: true
+    radarr:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.10.52:7878/"
+        passHostHeader: true
+    sonarr:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.10.52:8989/"
+        passHostHeader: true
+    webnut:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.10.51:6543/"
+        passHostHeader: true
+    traefik-default-backend:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.10.252:8080/"
+        passHostHeader: true
+    home-assistant:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.10.154:8123/"
+        passHostHeader: true
+    uptime-kuma:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.10.51:3001/"
+        passHostHeader: true
+    guacamole:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.10.50:8090/"
+        passHostHeader: true
+    grafana:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.10.51:3000/"
+        passHostHeader: true
+    prometheus:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.10.51:9090/"
+        passHostHeader: true
+    handbrake:
+      loadBalancer:
+        servers:
+          - url: "https://192.168.10.52:5800/"
+        passHostHeader: true
+    adguard-sync:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.10.50:8085/"
+        passHostHeader: true
+    zigbee2mqtt:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.10.252:8081/"
+        passHostHeader: true
+    librespeed:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.10.50:8088/"
+        passHostHeader: true
+    netboot-admin:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.10.50:3000/"
+        passHostHeader: true
+    netboot-pxe:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.10.50:8086/"
+        passHostHeader: true
+    influxdb:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.10.80:8086/"
+        passHostHeader: true
+    dsmr:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.10.251:7777/"
+        passHostHeader: true
+    jellyfin:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.10.52:8096/"
+        passHostHeader: true
+    homebridge:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.10.252:8581/"
+        passHostHeader: true
+
+  middlewares:
+    https-redirect:
+      redirectScheme:
+        scheme: https
+
+    default-headers:
+      headers:
+        frameDeny: true
+        sslRedirect: true
+        browserXssFilter: true
+        contentTypeNosniff: true
+        forceSTSHeader: true
+        stsIncludeSubdomains: true
+        stsPreload: true
+        stsSeconds: 15552000
+        customFrameOptionsValue: SAMEORIGIN
+        customRequestHeaders:
+          X-Forwarded-Proto: https
+
+    adguard-headers-extra:
+      headers:
+        accessControlAllowMethods:
+          - GET
+          - OPTIONS
+          - PUT
+        accessControlAllowOriginList:
+          - "https://dashboard.local.technolab.cloud"
+        accessControlAllowHeaders: 
+          - "Authorization"
+        accessControlMaxAge: 3628800
+        accessControlAllowCredentials: true
+        addVaryHeader: true
+
+    default-whitelist:
+      ipWhiteList:
+        sourceRange:
+        - "10.0.0.0/8"
+        - "192.168.0.0/16"
+        - "172.16.0.0/12"
+
+    errorpage:
+      errors:
+        status:
+          - "500-599"
+        service: traefik-default-backend
+        query: "/{status}.html"
+
+    secured:
+      chain:
+        middlewares:
+        - default-whitelist
+        - default-headers
+        - errorpage
+    
+    add-guacamole-prefix:
+      addPrefix:
+        prefix: "/guacamole"
+
+tcp:
+  routers:
+    ldap:
+      entryPoints:
+        - "ldap"
+      rule: "HostSNI(`*`)"
+      service: "ldap"
+    mailhog:
+      entryPoints:
+        - "smtp"
+      rule: "HostSNI(`*`)"
+      service: "mailhog"
+    nextcloud:
+      entryPoints:
+        - "https"
+      rule: "HostSNI(`nextcloud.technolab.cloud`)"
+      tls:
+        passthrough: true
+      service: nextcloud
+    bitwarden:
+      entryPoints:
+        - "https"
+      rule: "HostSNI(`bitwarden.technolab.cloud`)"
+      tls:
+        passthrough: true
+      service: bitwarden
+    code-server:
+      entryPoints:
+        - "https"
+      rule: "HostSNI(`codeserver.technolab.cloud`)"
+      tls:
+        passthrough: true
+      service: code-server
+    git:
+      entryPoints:
+        - "https"
+      rule: "HostSNI(`git.technolab.cloud`)"
+      tls:
+        passthrough: true
+      service: git
+    harbor:
+      entryPoints:
+        - "https"
+      rule: "HostSNI(`harbor.technolab.cloud`)"
+      tls:
+        passthrough: true
+      service: harbor
+
+  services:
+    ldap:
+      loadBalancer:
+        servers:
+          - address: "192.168.10.50:8389"
+    mailhog:
+      loadBalancer:
+        servers:
+          - address: "192.168.10.50:1025"
+    nextcloud:
+      loadBalancer:
+        servers:
+          - address: "10.0.30.10:443"
+    bitwarden:
+      loadBalancer:
+        servers:
+          - address: "10.0.30.10:443"
+    code-server:
+      loadBalancer:
+        servers:
+          - address: "10.0.30.10:443"
+    git:
+      loadBalancer:
+        servers:
+          - address: "10.0.30.10:443"
+    harbor:
+      loadBalancer:
+        servers:
+          - address: "10.0.30.10:443"

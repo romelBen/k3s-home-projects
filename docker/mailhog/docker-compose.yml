@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  mailhog:
+    image: docker.io/mailhog/mailhog:v1.0.1
+    container_name: mailhog
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - 1025:1025
+      - 8025:8025

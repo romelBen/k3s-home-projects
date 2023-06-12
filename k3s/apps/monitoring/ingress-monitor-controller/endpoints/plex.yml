@@ -1,0 +1,12 @@
+---
+apiVersion: endpointmonitor.stakater.com/v1alpha1
+kind: EndpointMonitor
+metadata:
+  name: plex
+spec:
+  forceHttps: true
+  providers: "UptimeRobot"
+  url: https://plex.technolab.cloud/identity
+  uptimeRobotConfig:
+    interval: 300
+    monitorType: "http"

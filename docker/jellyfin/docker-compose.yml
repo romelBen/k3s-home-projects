@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+  jellyfin:
+    image: linuxserver/jellyfin:2021.12.16
+    container_name: jellyfin
+    ports:
+      - 8096:8096
+    volumes:
+      - $HOME/jellyfin/config:/config
+      - /nfs/Media/Series:/data/tvshows
+      - /nfs/Media/Movies:/data/movies
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - media
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - NVIDIA_VISIBLE_DEVICES=all
+      - JELLYFIN_PublishedServerUrl=192.168.10.52
+    restart: unless-stopped
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - capabilities: [gpu]
+
+networks:
+  media:
+    external: true

@@ -1,0 +1,29 @@
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: nextcloud
+  namespace: services
+  labels:
+    app: nextcloud
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    kubernetes.io/ingress.allow-http: "false"
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.middlewares: services-nc-buffer@kubernetescrd,services-nc-caldav@kubernetescrd,services-nc-headers@kubernetescrd,kube-system-traefik-errors@kubernetescrd,services-traefik-real-ip@kubernetescrd,services-rate-limit@kubernetescrd
+    external-dns.alpha.kubernetes.io/hostname: nextcloud.technolab.cloud
+    external-dns.alpha.kubernetes.io/target: technolab.cloud
+spec:
+  rules:
+  - host: nextcloud.technolab.cloud
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: nextcloud
+          servicePort: 8080
+  tls:
+  - hosts:
+    - nextcloud.technolab.cloud
+    secretName: services-technolab-cloudflare-org-tls

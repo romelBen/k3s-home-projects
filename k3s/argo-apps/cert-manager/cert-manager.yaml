@@ -1,0 +1,26 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  namespace: argo-cd
+  name: cert-manager
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/romelBen/k3s-home-projects.git
+    targetRevision: HEAD
+    path: k3s/apps/cert-manager/cert-manager/
+    helm:
+      releaseName: cert-manager
+      valueFiles:
+        - values.yaml
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cert-manager
+
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true

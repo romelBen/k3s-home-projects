@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  homebridge:
+    image: oznu/homebridge:2021-12-12
+    container_name: homebridge
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    network_mode: host
+    environment:
+      - TZ=America/Chicago
+      - PGID=1000
+      - PUID=1000
+      - HOMEBRIDGE_CONFIG_UI=1
+      - HOMEBRIDGE_CONFIG_UI_PORT=8581
+    volumes:
+      - $HOME/homebridge/data:/homebridge

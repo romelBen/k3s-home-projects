@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  firefly:
+    image: fireflyiii/core:version-5.5.12
+    container_name: firefly
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      - APP_ENV=local
+      - APP_KEY=
+      - DB_HOST=
+      - DB_CONNECTION=pgsql
+      - DB_PORT=5432
+      - DB_DATABASE=
+      - DB_USERNAME=
+      - DB_PASSWORD=
+      - TRUSTED_PROXIES="**"
+      - APP_URL=https://firefly.local.technolab.cloud
+    volumes:
+      - $HOME/firefly/uploads:/var/www/html/firefly-iii/storage/upload

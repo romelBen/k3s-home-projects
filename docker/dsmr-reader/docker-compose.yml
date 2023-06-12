@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  dsmr:
+    image: xirixiz/dsmr-reader-docker:arm64v8-2021.12.08
+    container_name: dsmr-reader
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - $HOME/dsmr-reader/backups:/dsmr/backups
+    environment:
+      - DJANGO_TIME_ZONE=Europe/Berlin
+      - VIRTUAL_HOST=localhost
+      - DATALOGGER_SERIAL_BAUDRATE=115200
+      - DJANGO_DATABASE_HOST=
+      - DJANGO_DATABASE_NAME=
+      - DJANGO_DATABASE_USER=
+      - DJANGO_DATABASE_PASSWORD=
+    ports:
+      - 7777:80
+      - 7779:443
+    devices:
+      - /dev/ttyUSB0:/dev/ttyUSB0
+    restart: unless-stopped

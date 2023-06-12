@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+  openldap:
+    image: osixia/openldap:1.5.0
+    container_name: openldap
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    command: 
+      - "--copy-service"
+      - "--loglevel"
+      - "debug"
+    ports:
+      - 8389:389
+    volumes:
+      - $HOME/ldap/data:/var/lib/ldap
+      - $HOME/ldap/data/slapd.d:/etc/ldap/slapd.d
+      - $HOME/ldap/data/custom_config:/container/service/slapd/assets/config/bootstrap/ldif/custom
+    environment:
+      - LDAP_LOG_LEVEL=256
+      - LDAP_OPENLDAP_UID=1000
+      - LDAP_OPENLDAP_GID=1000
+      - LDAP_ORGANISATION=Technolab
+      - LDAP_DOMAIN=technolab.cloud
+      - LDAP_READONLY_USER=true
+      - LDAP_READONLY_USER_USERNAME=readonly
+      - LDAP_READONLY_USER_PASSWORD=
+      - LDAP_ADMIN_PASSWORD=
+      - LDAP_ADDITIONAL_MODULES=memberof
+      - LDAP_ADDITIONAL_SCHEMAS=openldap
+      - LDAP_TLS=false
+      - LDAP_REPLICATION=false
+      - LDAP_TLS_VERIFY_CLIENT=false

@@ -1,0 +1,124 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authelia
+  namespace: services
+  annotations:
+    configmap.reloader.stakater.com/reload: "authelia-config"
+  labels:
+    app: authelia
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: authelia
+  template:
+    metadata:
+      labels:
+        app: authelia
+      annotations: {}
+    spec:
+      enableServiceLinks: false
+      containers:
+      - name: authelia
+        image: authelia/authelia:4.34.5
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
+        - name: TZ
+          value: Europe/Berlin
+        - name: AUTHELIA_JWT_SECRET_FILE
+          value: /app/secrets/jwt
+        - name: AUTHELIA_SESSION_SECRET_FILE
+          value: /app/secrets/session
+        - name: AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD_FILE
+          value: /app/secrets/ldap_password
+        - name: AUTHELIA_STORAGE_POSTGRES_PASSWORD_FILE
+          value: /app/secrets/psql_password
+        - name: AUTHELIA_SESSION_REDIS_PASSWORD_FILE
+          value: /app/secrets/redis_password
+        - name: AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE
+          value: /app/secrets/encryption_key
+        ports:
+        - name: authelia-port
+          containerPort: 9091
+        startupProbe:
+          httpGet:
+            scheme: HTTP
+            path: /api/state
+            port: authelia-port
+          initialDelaySeconds: 15
+          timeoutSeconds: 5
+          periodSeconds: 5
+          failureThreshold: 4
+        livenessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /api/state
+            port: authelia-port
+          initialDelaySeconds: 60
+          timeoutSeconds: 5
+          periodSeconds: 30
+          failureThreshold: 2
+        readinessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /api/state
+            port: authelia-port
+          initialDelaySeconds: 15
+          timeoutSeconds: 5
+          periodSeconds: 5
+          failureThreshold: 5
+        resources:
+          limits:
+            cpu: "1000m"
+            memory: 512Mi
+          requests:
+            cpu: "200m"
+            memory: 256Mi
+        volumeMounts:
+        - mountPath: /config
+          name: config-volume
+        - mountPath: /app/secrets
+          name: secrets
+          readOnly: true
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - authelia
+            topologyKey: "kubernetes.io/hostname"
+      tolerations: []
+      volumes:
+      - name: config-volume
+        configMap:
+          name: authelia-config
+          items:
+          - key: configuration.yml
+            path: configuration.yml
+      - name: secrets
+        secret:
+          secretName: authelia-secret
+          items:
+          - key: JWT_SECRET
+            path: jwt
+          - key: SESSION_SECRET
+            path: session
+          - key: DB_PASSWORD
+            path: psql_password
+          - key: LDAP_ADMIN_PASSWORD
+            path: ldap_password
+          - key: REDIS_PASSWORD
+            path: redis_password
+          - key: ENCRYPTION_KEY
+            path: encryption_key

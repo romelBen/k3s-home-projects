@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+  jackett:
+    image: linuxserver/jackett:version-v0.20.736
+    container_name: jackett
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - media
+    ports:
+      - 9117:9117
+    environment:
+      - PUID=65534
+      - PGID=65534
+      - TZ=America/Chicago
+      - AUTO_UPDATE=true
+    volumes:
+      - $HOME/jackett/data:/config
+
+networks:
+  media:
+    external: true

@@ -1,0 +1,12 @@
+---
+apiVersion: endpointmonitor.stakater.com/v1alpha1
+kind: EndpointMonitor
+metadata:
+  name: nextcloud
+spec:
+  forceHttps: true
+  providers: "UptimeRobot"
+  url: https://nextcloud.technolab.cloud/status.php
+  uptimeRobotConfig:
+    interval: 300
+    monitorType: "http"

@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  nut:
+    image: teknologist/webnut:0.1
+    container_name: webnut
+    environment:
+      - UPS_HOST=
+      - UPS_PORT=3493
+      - UPS_USER=
+      - UPS_PASSWORD=
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - 6543:6543

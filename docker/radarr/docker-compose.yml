@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+  radarr:
+    image: ghcr.io/linuxserver/radarr:version-4.0.5.5981
+    container_name: radarr
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - media
+    ports:
+      - 7878:7878
+    environment:
+      - PUID=65534
+      - PGID=65534
+      - TZ=America/Chicago
+    volumes:
+      - $HOME/radarr/data:/config
+      - /nfs/Media/downloads/transcoded:/downloads
+      - /nfs/Media/Movies:/movies
+
+networks:
+  media:
+    external: true

@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+  lidarr:
+    image: ghcr.io/linuxserver/lidarr:version-0.8.1.2135
+    container_name: lidarr
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - media
+    ports:
+      - 8686:8686
+    environment:
+      - PUID=65534
+      - PGID=65534
+      - TZ=America/Chicago
+    volumes:
+      - $HOME/lidarr/data:/config
+      - /nfs/Media/downloads/completed:/downloads
+      - /nfs/Media/Music:/music
+
+networks:
+  media:
+    external: true

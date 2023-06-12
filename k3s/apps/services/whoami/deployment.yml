@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whoami
+  namespace: services
+  labels:
+    app: whoami
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: whoami
+  template:
+    metadata:
+      labels:
+        app: whoami
+      annotations: {}
+    spec:
+      containers:
+      - name: whoami
+        image: traefik/whoami:v1.8.0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 80
+        resources:
+          requests:
+            cpu: 50m
+            memory: 50Mi
+          limits:
+            cpu: 200m
+            memory: 100Mi
+      nodeSelector:
+        beta.kubernetes.io/arch: amd64
+      tolerations: []
+      affinity: {}

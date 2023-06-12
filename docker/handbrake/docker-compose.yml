@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  handbrake:
+    container_name: handbrake
+    image: zocker160/handbrake-nvenc:14x
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - 5800:5800
+    environment:
+      - USER_ID=1000
+      - GROUP_ID=1000
+      - TZ=America/Chicago
+      - ENABLE_CJK_FONT=1
+      - KEEP_APP_RUNNING=1
+      - AUTOMATED_CONVERSION_PRESET=Custom/H.265 NVENC 2160p 4K
+      - AUTOMATED_CONVERSION_OUTPUT_SUBDIR=SAME_AS_SRC
+      - AUTOMATED_CONVERSION_NON_VIDEO_FILE_ACTION=copy
+      - SECURE_CONNECTION=1
+      - AUTOMATED_CONVERSION_FORMAT=mp4
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - NVIDIA_VISIBLE_DEVICES=all
+    volumes:
+      - $HOME/handbrake/config:/config:rw
+      - /nfs/Media:/storage:ro
+      - /nfs/Media/downloads/completed:/watch:rw
+      - /nfs/Media/downloads/transcoded:/output:rw
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]

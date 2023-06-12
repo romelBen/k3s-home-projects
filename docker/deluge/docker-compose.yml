@@ -1,0 +1,40 @@
+version: "3"
+
+services:
+  deluge:
+    image: ebrianne/docker-deluge-openvpn:latest
+    container_name: deluge
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - media
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=0
+    ports:
+      - 8112:8112
+    environment:
+      - PUID=65534
+      - PGID=65534
+      - TZ=America/Chicago
+      - OPENVPN_PROVIDER=PIA
+      - CREATE_TUN_DEVICE=true
+      - LOCAL_NETWORK=192.168.0.0/16
+      - ENABLE_UFW=true
+      - UFW_ALLOW_GW_NET=true
+      - DROP_DEFAULT_ROUTE=true
+      - OPENVPN_USERNAME=
+      - OPENVPN_PASSWORD=
+      - DISABLE_PORT_UPDATER=true
+    volumes:
+      - $HOME/deluge/data:/config
+      - /nfs/Media/downloads/incomplete:/download/incomplete
+      - /nfs/Media/downloads/completed:/download/completed
+      - /nfs/Media/downloads/torrents:/download/torrent
+      - /nfs/Media/downloads/watch:/download/watch
+
+networks:
+  media:
+    external: true

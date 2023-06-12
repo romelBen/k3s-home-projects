@@ -1,0 +1,22 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  namespace: argo-cd
+  name: traefik-default-backend
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/romelBen/k3s-home-projects.git
+    targetRevision: HEAD
+    path: k3s/apps/kube-system/traefik-default-backend/
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kube-system
+
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true

@@ -1,0 +1,99 @@
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  annotations: {}
+  labels:
+    app.kubernetes.io/name: traefik
+  name: traefik
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: traefik
+  template:
+    metadata:
+      annotations:
+        prometheus.io/port: '8082'
+        prometheus.io/scrape: 'true'
+      labels:
+        app.kubernetes.io/name: traefik
+    spec:
+      containers:
+        - name: traefik
+          image: 'traefik:v2.6.1'
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: TZ
+              value: Europe/Berlin
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /ping
+              port: 9000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 2
+          ports:
+            - containerPort: 9000
+              name: traefik
+              protocol: TCP
+            - containerPort: 8443
+              name: websecure
+              protocol: TCP
+            - containerPort: 10222
+              name: git-ssh
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 1
+            httpGet:
+              path: /ping
+              port: 9000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 2
+          resources: {}
+          securityContext:
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
+            runAsGroup: 65532
+            runAsNonRoot: true
+            runAsUser: 65532
+          volumeMounts:
+            - mountPath: /data
+              name: data
+            - mountPath: /tmp
+              name: tmp
+            - mountPath: /plugins-storage
+              name: plugins
+            - mountPath: /etc/traefik
+              name: yml-config
+      hostNetwork: false
+      nodeSelector:
+        kubernetes.io/os: linux
+        node-role.kubernetes.io/worker: 'true'
+      priorityClassName: system-cluster-critical
+      securityContext:
+        fsGroup: 65532
+      serviceAccountName: traefik
+      terminationGracePeriodSeconds: 60
+      volumes:
+        - emptyDir: {}
+          name: data
+        - emptyDir: {}
+          name: tmp
+        - emptyDir: {}
+          name: plugins
+        - name: yml-config
+          secret:
+            secretName: traefik-secret
+            items:
+              - key: traefik.yaml
+                path: traefik.yaml
+                mode: 0600
+  updateStrategy:
+    type: RollingUpdate

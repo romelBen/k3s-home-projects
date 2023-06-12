@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  flaresolverr:
+    image: flaresolverr/flaresolverr:v2.2.2
+    container_name: flaresolverr
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - media
+    environment:
+      - TZ=America/Chicago
+      - LOG_LEVEL=info
+
+networks:
+  media:
+    external: true

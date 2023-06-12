@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  zigbee2mqtt:
+    container_name: zigbee2mqtt
+    restart: unless-stopped
+    image: koenkk/zigbee2mqtt:1.24.0
+    volumes:
+      - $HOME/zigbee2mqtt/data:/app/data
+      - /run/udev:/run/udev:ro
+    ports:
+      - 8081:8081  
+    environment:
+      - TZ=America/Chicago
+    devices:
+      - /dev/ttyACM0:/dev/ttyACM0
+    networks:
+      - ha_net
+
+networks:
+  ha_net:
+    external: true
